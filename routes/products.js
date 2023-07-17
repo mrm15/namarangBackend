@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Author = require('../models/author')
+const Products = require('../models/products')
 
 router.get('/', async (req, res) => {
 
@@ -9,47 +9,51 @@ router.get('/', async (req, res) => {
   console.log('searchOptions', searchOptions)
   try {
 
-    const authors = await Author.find(searchOptions);
-    res.render('authors/index', {authors: authors, searchOptions: req.query.name})
-  } catch {
-    console.log('errrrror')
-    res.redirect('/')
+    const products = await Products.find(searchOptions);
+    // res.render('authors/index', {authors: authors, searchOptions: req.query.name})
+    res.send({
+      status: true,
+      data: products
+    })
+  } catch (err) {
+
+    res.send({
+      status: false,
+      data: [],
+      message: err
+    })
   }
 });
 
-//new author
+//new product
 router.get('/new', (req, res) => {
-  res.render('authors/new', {author: new Author()})
+  // res.render('authors/new', {author: new Author()})
 });
 
 router.post('/', async (req, res) => {
-  // const authors = await Author.find({name:'test'});
-  //
-  //
-  //
-  //
-  // res.send({
-  //   status: true,
-  //   authors
-  //
-  // })
-  //
-  // return;
+
 
   console.log("req.body.name:", req.body.name)
-  const author = new Author({
-    name: req.body.name
+  const product = new Products({
+    name: req.body.name,
+    description: req.body.description,
+    unit: req.body.unit,
+    price: req.body.price,
+    number: 1,
   });
   try {
-    const newAuthor = await author.save();
+    const newProduct = await product.save();
     // res.redirect(`authors/${newAuthor.id}`)
-    res.redirect(`/authors`);
+    res.send({
+      status: true,
+      message: "کالا ثبت شد",
+    })
 
 
-  } catch {
-    console.log("there is a error");
-    res.render('authors/new', {
-      author: author, errorMessage: 'Error Creating  New User!'
+  } catch (err) {
+    res.send({
+      status: false,
+      message: err,
     })
 
   }
