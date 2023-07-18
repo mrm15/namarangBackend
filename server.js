@@ -16,10 +16,10 @@ app.use(expressLayouts)
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 
-// const mongoURI = process.env.DATABASE_URL || 'mongodb://localhost:27017/MyDb';
-// const mongoURI = 'mongodb://127.0.0.1:27017/monotest';
 
-const mongoURI = `mongodb+srv://root:09384642159@cluster0.l53kbk3.mongodb.net/`;
+// const mongoURI = `mongodb+srv://rishe:numberLand@cluster0.l53kbk3.mongodb.net/`;
+ const mongoURI = ``;
+
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
