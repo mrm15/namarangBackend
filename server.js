@@ -2,8 +2,13 @@
 //   require('dotenv').parse();
 // }
 const express = require('express');
+const cors = require("cors");
+
 
 const app = express();
+app.use(cors({
+  origin: '*'
+}));
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
