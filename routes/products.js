@@ -33,7 +33,6 @@ router.get('/new', (req, res) => {
 router.post('/', async (req, res) => {
 
 
-  console.log("req.body.name:", req.body.name)
   const product = new Products({
     name: req.body.name,
     description: req.body.description,
