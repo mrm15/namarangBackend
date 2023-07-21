@@ -33,6 +33,8 @@ router.get('/new', (req, res) => {
 router.post('/', async (req, res) => {
 
 
+  // res.send(req.body)
+  // return
   const product = new Products({
     name: req.body.name,
     description: req.body.description,
@@ -46,6 +48,7 @@ router.post('/', async (req, res) => {
     res.send({
       status: true,
       message: "کالا ثبت شد",
+      newProduct
     })
 
 

@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 
 
-// const mongoURI = `mongodb+srv://rishe:numberLand@cluster0.l53kbk3.mongodb.net/`;
+// const mongoURI = `mongodb+srv://root:09384642159@cluster0.l53kbk3.mongodb.net/`;
  const mongoURI = `mongodb://127.0.0.1:27017/test`;
 
 
