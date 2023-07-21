@@ -19,14 +19,16 @@ app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layout');
 app.use(expressLayouts)
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
+// app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
+app.use(bodyParser.json());
+
 
 
 // const mongoURI = `mongodb+srv://rishe:numberLand@cluster0.l53kbk3.mongodb.net/`;
- const mongoURI = ``;
+ const mongoURI = `mongodb://127.0.0.1:27017/test`;
 
 
-mongoose.connect(mongoURI, {
+mongoose.connect(mongoURI , {
   useNewUrlParser: true,
   // useUnifiedTopology: true,
 });
@@ -38,9 +40,9 @@ db.once('open', () => console.log('Database Connected'));
 
 
 const indexRouter = require('./routes/index');
-app.use('/', indexRouter);
+app.use('/api', indexRouter);
 const productsRouter = require('./routes/products');
-app.use('/products', productsRouter);
+app.use('/api/products', productsRouter);
 
 
 const port = process.env.PORT || 3001;
