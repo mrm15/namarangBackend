@@ -23,12 +23,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 
-
 // const mongoURI = `mongodb+srv://root:09384642159@cluster0.l53kbk3.mongodb.net/`;
- const mongoURI = `mongodb://127.0.0.1:27017/test`;
+const mongoURI = `mongodb://127.0.0.1:27017/test`;
 
 
-mongoose.connect(mongoURI , {
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   // useUnifiedTopology: true,
 });
@@ -43,6 +42,8 @@ const indexRouter = require('./routes/index');
 app.use('/api', indexRouter);
 const productsRouter = require('./routes/products');
 app.use('/api/products', productsRouter);
+const productGroupRouter = require('./routes/productGroup');
+app.use('/api/productGroup', productGroupRouter);
 
 
 const port = process.env.PORT || 3001;

@@ -4,21 +4,27 @@ const productsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'productGroup'
+
+  },
   description: {
     type: String,
     required: true,
   },
-  number:{
-    type:Number,
-    defaultValue:1
+  number: {
+    type: Number,
+    defaultValue: 1
   },
-  price:{
-    type:String,
-    required:true
+  price: {
+    type: String,
+    required: true
   },
-  unit:{
-    type:String,
-    required:true
+  unit: {
+    type: String,
+    required: true,
   }
 });
 

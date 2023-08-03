@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Products = require('../models/products')
+const ProductGroup = require('../models/productGroup')
 
 router.get('/', async (req, res) => {
 
@@ -11,6 +12,10 @@ router.get('/', async (req, res) => {
 
     const products = await Products.find(searchOptions);
     // res.render('authors/index', {authors: authors, searchOptions: req.query.name})
+
+
+
+
     res.send({
       status: true,
       data: products
@@ -26,9 +31,7 @@ router.get('/', async (req, res) => {
 });
 
 //new product
-router.get('/new', (req, res) => {
-  // res.render('authors/new', {author: new Author()})
-});
+
 
 router.post('/', async (req, res) => {
 
@@ -37,6 +40,7 @@ router.post('/', async (req, res) => {
   // return
   const product = new Products({
     name: req.body.name,
+    category:req.body.category,
     description: req.body.description,
     unit: req.body.unit,
     price: req.body.price,
