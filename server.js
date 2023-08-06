@@ -21,6 +21,7 @@ app.use(expressLayouts)
 app.use(express.static('public'));
 // app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 app.use(bodyParser.json());
+// app.use(express.json()) // add to test
 
 
 // const mongoURI = `mongodb+srv://root:09384642159@cluster0.l53kbk3.mongodb.net/`;

@@ -4,29 +4,26 @@ const Products = require('../models/products')
 const ProductGroup = require('../models/productGroup')
 
 router.get('/', async (req, res) => {
-
   const searchOptions = req.query.name ? {name: new RegExp(req.query.name, 'i')} : {};
 
-  console.log('searchOptions', searchOptions)
+  // console.log('searchOptions', searchOptions);
   try {
-
-    const products = await Products.find(searchOptions);
-    // res.render('authors/index', {authors: authors, searchOptions: req.query.name})
-
-
+    const products = await Products.find(searchOptions).populate('category').lean();
+    products.forEach(v=>{
+      v.category = v.category.name|| -1
+    })
 
 
     res.send({
       status: true,
-      data: products
-    })
+      data: products,
+    });
   } catch (err) {
-
     res.send({
       status: false,
       data: [],
-      message: err
-    })
+      message: err,
+    });
   }
 });
 
@@ -40,7 +37,7 @@ router.post('/', async (req, res) => {
   // return
   const product = new Products({
     name: req.body.name,
-    category:req.body.category,
+    category: req.body.category,
     description: req.body.description,
     unit: req.body.unit,
     price: req.body.price,
