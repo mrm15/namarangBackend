@@ -1,54 +1,88 @@
-// if (process.env.NODE_ENV !== 'production') {
-//   require('dotenv').parse();
-// }
+require('dotenv').config();
 const express = require('express');
-const cors = require("cors");
-
-
 const app = express();
-app.use(cors({
-  origin: '*'
-}));
-const expressLayouts = require('express-ejs-layouts');
+const path = require('path');
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
+const {logger} = require('./middleware/logEvents');
+const errorHandler = require('./middleware/errorHandler');
+const verifyJWT = require('./middleware/verifyJWT');
+const cookieParser = require('cookie-parser');
+const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
+const connectDB = require('./config/dbConn');
+const PORT = process.env.PORT || 3001;
+
+// Connect to MongoDB
+connectDB();
+// custom middleware logger
+app.use(logger);
+
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
+// app.use(cors({
+//   origin: '*'
+// }));
+// built-in middleware to handle urlencoded form data
+app.use(express.urlencoded({ extended: false }));
+// built-in middleware for json
+app.use(express.json());
+
+//middleware for cookies
+app.use(cookieParser());
+
+//serve static files
+// app.use('/', express.static(path.join(__dirname, '/public')));
+// app.use(express.static('public'));
+//app.set('view engine', 'ejs');
+//app.use(expressLayouts)
+
+//const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser')
-
-
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.set('layout', 'layouts/layout');
-app.use(expressLayouts)
-app.use(express.static('public'));
-// app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 app.use(bodyParser.json());
-// app.use(express.json()) // add to test
 
 
-// const mongoURI = `mongodb+srv://root:09384642159@cluster0.l53kbk3.mongodb.net/`;
-const mongoURI = `mongodb://127.0.0.1:27017/test`;
+
+// app.set('views', __dirname + '/views');
+// app.set('layout', 'layouts/layout');
+
+// app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
+app.use(express.json()) // add to test
 
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  // useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on('error', error => console.error(error));
-db.once('open', () => console.log('Database Connected'));
+// add Routes
+app.use('/api', require('./routes/index'));
 
 
-const indexRouter = require('./routes/index');
-app.use('/api', indexRouter);
-const productsRouter = require('./routes/products');
-app.use('/api/products', productsRouter);
-const productGroupRouter = require('./routes/productGroup');
-app.use('/api/productGroup', productGroupRouter);
+//---------------  Auth ------------------
+app.use('/register', require('./routes/auth/register'));
+app.use('/auth', require('./routes/auth/auth'));
+app.use('/users', require('./routes/users'));
+app.use('/refresh', require('./routes/auth/refresh'));
+app.use('/logout', require('./routes/auth/logout'));
+//---------------------------------------
+
+//----------- path Need To verifyJWT ----------------------------
+
+app.use(verifyJWT);
+app.use('/users', require('./routes/users'));
+
+app.use('/api/products', require('./routes/products'));
+app.use('/api/productGroup', require('./routes/productGroup'));
+//----------- End  Need To verifyJWT ----------------------------
 
 
-const port = process.env.PORT || 3001;
+ app.all('*', (req, res) => {
+  res.status(404).send({message: `404 Not Found: ${req.url} `})
+})
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.use(errorHandler);
+
+mongoose.connection.once('open', () => {
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
