@@ -1,7 +1,7 @@
 const Products = require("../../models/products");
 
 
-const addNewProduct =  async (req, res) => {
+const addNewProduct = async (req, res) => {
 
 
   // res.send(req.body)
@@ -14,6 +14,7 @@ const addNewProduct =  async (req, res) => {
     price: req.body.price,
     number: 1,
   });
+  debugger
   try {
     const newProduct = await product.save();
     // res.redirect(`authors/${newAuthor.id}`)

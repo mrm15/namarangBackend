@@ -23,12 +23,12 @@ app.use(logger);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
-// app.use(cors({
-//   origin: '*'
-// }));
+// app.use(cors(corsOptions));
+app.use(cors({
+  origin: '*'
+}));
 // built-in middleware to handle urlencoded form data
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 // built-in middleware for json
 app.use(express.json());
 
@@ -46,7 +46,6 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 
 
-
 // app.set('views', __dirname + '/views');
 // app.set('layout', 'layouts/layout');
 
@@ -55,28 +54,36 @@ app.use(express.json()) // add to test
 
 
 // add Routes
-app.use('/api', require('./routes/index'));
+// app.use('/api', require('./routes/index'));
 
 
+// ===== test SMS=========
+// app.use('/sendsms', require('./routes/smstest/send'));
+// loginRegister SMS
 //---------------  Auth ------------------
-app.use('/register', require('./routes/auth/register'));
+
+app.use('/register', require('./routes/loginRegisterWithSms/registerSMS'))
+app.use('/login', require('./routes/loginRegisterWithSms/loginSMS'))
+// app.use('/register', require('./routes/auth/register'));
 app.use('/auth', require('./routes/auth/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 //---------------------------------------
 
+
+app.use('/api/products', require('./routes/products'));
+app.use('/api/productGroup', require('./routes/productGroup'));
 //----------- path Need To verifyJWT ----------------------------
 
 app.use(verifyJWT);
 app.use('/users', require('./routes/users'));
 
-app.use('/api/products', require('./routes/products'));
-app.use('/api/productGroup', require('./routes/productGroup'));
+
 //----------- End  Need To verifyJWT ----------------------------
 
 
- app.all('*', (req, res) => {
+app.all('*', (req, res) => {
   res.status(404).send({message: `404 Not Found: ${req.url} `})
 })
 
