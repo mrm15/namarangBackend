@@ -97,6 +97,7 @@ const handleVerifySMS = async (req, res) => {
       return res.status(401).json({status: false, message: "کد وارد شده صحیح نیست. مجددا بررسی کنید."});
     }
     user.isRegister = true
+    user.loginCode = ""
     user.updateAt = currentTimeStamp;
 
     await user.save();
