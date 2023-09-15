@@ -21,7 +21,7 @@ const logEvents = async (message, logName) => {
 }
 
 const logger = (req, res, next) => {
-  debugger
+
   logEvents(`${req.method}\t${req.headers.origin}\t${req.url}` , "reqLog.txt").then(r => {
     console.log('reported!')
   })

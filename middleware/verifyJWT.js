@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
+  debugger
     const authHeader = req.headers.authorization || req.headers.Authorization;
 
     if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
@@ -15,8 +16,9 @@ const verifyJWT = (req, res, next) => {
               debugger
               return res.sendStatus(403)
             }; //invalid token
-            req.user = decoded.UserInfo.username;
+            // req.user = decoded.UserInfo.username;
             req.roles = decoded.UserInfo.roles;
+            req.userInfo=decoded.UserInfo
             next();
         }
     );

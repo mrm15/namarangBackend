@@ -57,7 +57,7 @@ const handleLoginSMS = async (req, res) => {
 
 
 const verifyLoginSMS = async (req, res) => {
-  debugger
+
   const cookies = req.cookies;
   //console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
   const {phoneNumber: phoneNumber, loginCode: loginCode} = req.body;
@@ -84,11 +84,13 @@ const verifyLoginSMS = async (req, res) => {
 
   // evaluate password
   const roles = Object.values(foundUser.roles).filter(Boolean);
+
+
   // create JWTs
   const accessToken = jwt.sign(
     {
       "UserInfo": {
-        "username": foundUser.username,
+        "phoneNumber": foundUser.phoneNumber,
         "roles": roles
       }
     },

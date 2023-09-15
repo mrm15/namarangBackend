@@ -72,11 +72,13 @@ app.use('/logout', require('./routes/auth/logout'));
 //---------------------------------------
 
 
-app.use('/api/products', require('./routes/products'));
-app.use('/api/productGroup', require('./routes/productGroup'));
+
 //----------- path Need To verifyJWT ----------------------------
 
 app.use(verifyJWT);
+app.use('/api/products', require('./routes/products'));
+app.use('/api/productGroup', require('./routes/productGroup'));
+app.use('/api/orders/submit', require('./routes/orders/submit'));
 app.use('/users', require('./routes/users'));
 
 

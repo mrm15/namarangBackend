@@ -46,16 +46,16 @@ const handleRefreshToken = async (req, res) => {
       const accessToken = jwt.sign(
         {
           "UserInfo": {
-            "username": decoded.username,
+            "phoneNumber": decoded.phoneNumber,
             "roles": roles
           }
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '10s' }
+        { expiresIn: '3600s' }
       );
 
       const newRefreshToken = jwt.sign(
-        { "username": foundUser.username },
+        { "phoneNumber": foundUser.phoneNumber },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
