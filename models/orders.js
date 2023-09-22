@@ -1,21 +1,15 @@
 const mongoose = require('mongoose');
 const ordersSchema = new mongoose.Schema({
 
+  orderNumber: {
+    type: String, required: true,
+  }, senderId: {
+    type: mongoose.Schema.Types.ObjectId, required: false, ref: 'User'
 
-  senderId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
-
-  },
-  receiverId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
-  },
-  title: {
-    type: String,
-    required: true,
+  }, receiverId: {
+    type: mongoose.Schema.Types.ObjectId, required: false, ref: 'User'
+  }, title: {
+    type: String, required: true,
   },
 
   tableData: {
@@ -25,11 +19,9 @@ const ordersSchema = new mongoose.Schema({
 
   fileName: {
     type: String,
-  },
-  fileUrl: {
+  }, fileUrl: {
     type: String,
-  },
-  description: {
+  }, description: {
     type: String,
   },
 

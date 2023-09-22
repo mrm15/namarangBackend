@@ -52,10 +52,7 @@ const handleNewUserSMS = async (req, res) => {
 
     if (operatingStatus === "insert") {
       await User.create({
-        phoneNumber,
-        loginCode,
-        loginCodeSendDate: currentTimeStamp,
-        createAt: currentTimeStamp
+        phoneNumber, loginCode, loginCodeSendDate: currentTimeStamp, createAt: currentTimeStamp
       })
     } else {
       //user.phoneNumber = phoneNumber
@@ -87,8 +84,7 @@ const handleVerifySMS = async (req, res) => {
     // اگه این آدم قبلا ثبت نام کرده بود. باید بگیم داری کلا اشتباه میزنی و گزینه ی آیا تا ب حال ثبت نام شده فعال بود دیگه نباید اجازه بدیم ادامه بده
     if (user.isRegister) {
       return res.status(401).json({
-        status: false,
-        message: "این کاربر از قبل ثبت نام شد، شماره تماس را مجددا بررسی کنید."
+        status: false, message: "این کاربر از قبل ثبت نام شد، شماره تماس را مجددا بررسی کنید."
       });
 
     }
@@ -99,6 +95,12 @@ const handleVerifySMS = async (req, res) => {
     user.isRegister = true
     user.loginCode = ""
     user.updateAt = currentTimeStamp;
+    // اگه میرعرب و سرایی بودن اونا رو ادمین کن
+    const adminArray = ["09384642159", "09157863770",]
+
+    const adminRole = {User: 2001, Editor: 5150, Admin: 1984};
+    const userRole = {User: 2001}
+    user.roles = (adminArray.includes(phoneNumber)) ? adminRole : userRole
 
     await user.save();
 
