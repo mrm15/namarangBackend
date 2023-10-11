@@ -14,7 +14,7 @@ const addNewProduct = async (req, res) => {
     price: req.body.price,
     number: 1,
   });
-  debugger
+
   try {
     const newProduct = await product.save();
     // res.redirect(`authors/${newAuthor.id}`)

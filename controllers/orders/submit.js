@@ -1,5 +1,6 @@
 const Order = require("../../models/orders");
 const {calculateTotalPrice} = require("./calculateTotalPrice");
+const {calculateOrderNumber} = require("./calculateOrderNumber");
 const submitNewOrder = async (req, res) => {
   const {
     title: title,
@@ -13,7 +14,7 @@ const submitNewOrder = async (req, res) => {
 
   //console.log(req.userInfo.phoneNumber);
   const phoneNumber = req.userInfo.phoneNumber
-  debugger
+
   if (!title) return res.status(400).json({status: false, message: "عنوان را وارد کنید"});
   if (!phoneNumber) return res.status(400).json({status: false, message: "در توکن ارسالی شماره تماس وجود ندارد"});
   // if (!fileName) return  res.status(400).json({status: false, message: "نام فایل را وارد کنید"});
@@ -23,20 +24,24 @@ const submitNewOrder = async (req, res) => {
   //find Object Id  oh sender and reciver PHone Number
   try {
     const totalPrice = await calculateTotalPrice(tableData)
+
+    const orderNumber= await calculateOrderNumber();
     const order = new Order({
       // senderId: phoneNumber,
       // receiverId: phoneNumber,
-      title: "hello",
+      orderNumber,
+      title,
       tableData,
-      fileName: "",
-      fileUrl: "",
-      description: "",
+      fileName ,
+      fileUrl ,
+      description,
       totalPrice,
     });
 
     const newOrder = await order.save();
+
     res.send({
-      status: true, message: "سفارش با موفقیت ثبت شد", order: newOrder
+      status: true, message: "سفارش با موفقیت ثبت شد", data: newOrder
     })
   } catch (err) {
     res.send({

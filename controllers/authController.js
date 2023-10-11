@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
-     debugger
+
     const cookies = req.cookies;
     console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
     const { user, pwd } = req.body;

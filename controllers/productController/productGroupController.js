@@ -34,7 +34,7 @@ const getProductCategoryList = async (req, res) => {
 
     let productGroup = await ProductGroup.find({}).lean()
 
-    debugger
+
     const data = productGroup.map(row => {
       const label = row.name;
       const value = row['_id'].toString()

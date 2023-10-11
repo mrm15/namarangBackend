@@ -1,6 +1,6 @@
 const {logEvents} = require("./logEvents")
 const errorHandler = (err, req, res, next)=>{
-  debugger
+
   logEvents(`${err.name}:${err.message}`, 'errLog.txt').then(r =>{
     console.log('Mission Done!')
   })

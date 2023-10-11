@@ -12,7 +12,7 @@ const handleNewUserSMS = async (req, res) => {
 
   // check for duplicate phoneNumber in the db
   // const duplicate = await User.findOne({phoneNumber}).exec();
-  // debugger
+
 
   // if (duplicate) return res.sendStatus(409); //Conflict
   // اینجا رو باید بیام بعدا بنویسم که
